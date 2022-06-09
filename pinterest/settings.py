@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://pinterest-clone-niraj.herokuapp.com/']
+ALLOWED_HOSTS = ['pinterest-clone-niraj.herokuapp.com']
 
 
 # Application definition
