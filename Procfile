@@ -1,2 +1,2 @@
 web:gunicorn pinterest.wsgi
-heroku ps:scale web=1
+ps:scale web=1
