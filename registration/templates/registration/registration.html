@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+    Login
+{% endblock title %}
+{% block body %}
+<h1 class="text-center">Register</h1>
+<div class="container">
+    <div class="form-group">
+         <form method="POST" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            {{forms.non_field_errors}}
+            {% for form in forms %}
+                 <p>{{form.label_tag}}
+                    {{form}} <span class="errorlist">{{form.errors|striptags}}</span></p>
+            {% endfor %}
+            <input type="submit" value="submit" class="btn btn-primary">
+<!--            <input type="submit" value="Back" class="btn btn-primary">-->
+<!--             <a class="btn-primary" href="">Back</a>-->
+        </form>
+    </div>
+</div>
+
+{% endblock body %}
