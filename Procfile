@@ -1,2 +1,2 @@
-web:gunicorn pinterest.wsgi
-ps:scale web=1
+release: python manage.py migrate
+web: gunicorn pinterest.wsgi

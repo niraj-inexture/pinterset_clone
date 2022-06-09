@@ -6,7 +6,6 @@ class EmailAuthBackend(object):
             user = User.objects.get(email_id=username)
             print(check_password(password, user.password))
             if check_password(password, user.password):
-                print(120)
                 return user
             return None
         except User.DoesNotExist:

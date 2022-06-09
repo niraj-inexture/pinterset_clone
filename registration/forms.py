@@ -6,6 +6,7 @@ GENDER_CHOICES = [
     ('Female','Female'),
     ('Other','Other')
 ]
+
 class ModelFormRegistration(forms.ModelForm):
     gender = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
@@ -50,6 +51,10 @@ class ModelFormRegistration(forms.ModelForm):
     def clean_confirm_password(self):
         upassword = self.cleaned_data.get('password')
         conpassword = self.cleaned_data.get('confirm_password')
+
+        if len(upassword) < 7:
+            raise forms.ValidationError('Password length must be greater than 7')
+
         if upassword != conpassword:
             raise forms.ValidationError('Password does not match')
         return conpassword
