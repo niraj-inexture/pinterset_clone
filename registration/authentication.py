@@ -1,5 +1,6 @@
 from .models import User
 from django.contrib.auth.hashers import check_password
+
 class EmailAuthBackend(object):
     def authenticate(self, request,username=None,password=None):
         try:
@@ -14,5 +15,5 @@ class EmailAuthBackend(object):
     def get_user(self,user_id):
         try:
             return User.objects.get(pk=user_id)
-        except User.DoestNotExists:
+        except User.DoesNotExist:
             return None

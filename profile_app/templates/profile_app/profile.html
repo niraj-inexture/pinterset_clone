@@ -1,0 +1,42 @@
+{% extends 'home/base.html' %}
+{% block title %}
+    profile
+{% endblock title %}
+{% block body %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 m-auto">
+                    <p class="alert alert-success text-center text-bg-success p-1" role="alert">{{message}}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+<h1 class="text-center">Profile Page</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 m-auto text-center">
+            <div class="media">
+                <img class="rounded-circle account-img" src="{{ user.profile_image.url }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <div class="form-group">
+                <form method="POST" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{forms.non_field_errors}}
+                    {% for form in forms %}
+                        <p>{{form.label_tag}} {{form}} <span class="errorlist">{{form.errors|striptags}}</span></p>
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" value="update">
+                     <a class="btn btn-primary" href="{% url 'home' %}">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

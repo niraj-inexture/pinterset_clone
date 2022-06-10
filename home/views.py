@@ -6,4 +6,5 @@ class HomeClassView(View):
     def get(self, request):
         if 'id' not in request.session:
             return redirect('login')
-        return render(request, 'home/home.html')
+        id = request.session['id']
+        return render(request, 'home/home.html', {'id': id})

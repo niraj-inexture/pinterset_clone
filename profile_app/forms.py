@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from registration.models import User
 
 GENDER_CHOICES = [
     ("Male",'Male'),
@@ -7,20 +7,19 @@ GENDER_CHOICES = [
     ('Other','Other')
 ]
 
-class ModelFormRegistration(forms.ModelForm):
+class ProfileUpdateForm(forms.ModelForm):
     gender = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
     class Meta:
         model = User
-        fields = ['username','firstname','lastname','email_id','password','confirm_password','country','gender','profile_image']
-        widgets = {'password':forms.PasswordInput(attrs={'class': 'form-control'}),
-                   'username':forms.TextInput(attrs={'class': 'form-control'}),
+        fields = ['username','firstname','lastname','email_id','country','gender','profile_image']
+        widgets = {
+                   'username':forms.TextInput(attrs={'class':'form-control'}),
                    'firstname': forms.TextInput(attrs={'class': 'form-control'}),
                    'lastname': forms.TextInput(attrs={'class': 'form-control'}),
                    'email_id': forms.EmailInput(attrs={'class': 'form-control'}),
-                   'gender':forms.RadioSelect(attrs={'class': 'form-check-input'}),
-                   'country': forms.Select(attrs={'class': 'form-select'}),
+                    'country' : forms.Select(attrs={'class': 'form-select'}),
+                   'gender':forms.RadioSelect(attrs={'class':'form-check-input'})
                    }
 
     def clean_username(self):
@@ -48,22 +47,3 @@ class ModelFormRegistration(forms.ModelForm):
         if not lname.isalpha():
             raise forms.ValidationError('Firstname only contain alphabet')
         return lname
-
-    def clean_confirm_password(self):
-        upassword = self.cleaned_data.get('password')
-        conpassword = self.cleaned_data.get('confirm_password')
-
-        if len(upassword) < 7:
-            raise forms.ValidationError('Password length must be greater than 7')
-
-        if upassword != conpassword:
-            raise forms.ValidationError('Password does not match')
-        return conpassword
-
-class ModelFormLogin(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['email_id', 'password']
-        widgets = {'password': forms.PasswordInput(attrs={'class': 'form-control'}),
-                   'email_id':forms.EmailInput(attrs={'class': 'form-control'})
-                   }
