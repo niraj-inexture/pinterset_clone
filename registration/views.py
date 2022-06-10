@@ -9,7 +9,7 @@ from django.contrib import messages
 # Create your views here.
 class IndexClassView(View):
     def get(self, request):
-        return render(request, 'index.html')
+        return render(request, 'home/index.html')
 
 class RegisterClassView(View):
     def get(self, request):
