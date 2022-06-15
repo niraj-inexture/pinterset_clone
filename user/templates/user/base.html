@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+    {% block link %}
+    <link rel="stylesheet" type="text/css" href="{% static 'user/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'user/css/custom.css' %}">
+    {% endblock link %}
+</head>
+<body>
+    {% block body %}
+    {% endblock body %}
+</body>
+<script src="{% static 'user/js/jquery.js' %}"></script>
+<script src="{% static 'user/js/popper.js' %}"></script>
+<script src="{% static 'user/js/bootstrap.min.js' %}"></script>
+</html>
