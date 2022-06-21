@@ -1,14 +1,16 @@
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import ModelFormRegistration, ModelFormLogin, ProfileUpdateForm, PasswordChangeCustomForm
+from .forms import ModelFormRegistration, ModelFormLogin, ProfileUpdateForm, PasswordChangeCustomForm, \
+    ModelFormDeactivateAccount
 from .authentication import EmailAuthBackend
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from image_post.models import ImageStore
 
-
 # Create your views here.
+from .models import RegisterUser
+
 
 class HomeClassView(View):
     def get(self, request):
@@ -80,7 +82,8 @@ class ProfileClassView(View):
     def get(self, request):
         if request.user.is_authenticated:
             profile_form = ProfileUpdateForm(instance=request.user)
-            return render(request, 'user/profile.html', {'forms': profile_form})
+            deactivate_form = ModelFormDeactivateAccount(initial={'is_active': False})
+            return render(request, 'user/profile.html', {'forms': profile_form, 'deactivate_form': deactivate_form})
         else:
             return redirect('index')
 
@@ -115,3 +118,20 @@ class ChangePasswordView(View):
                 return render(request, 'user/change_password.html', {'forms': change_pass})
         else:
             return redirect('index')
+
+
+# This class view is used to deactivate user account
+class DeactivateAccountClassView(View):
+    def post(self, request):
+        deactivate_data = ModelFormDeactivateAccount(request.POST, instance=request.user)
+        if deactivate_data.is_valid():
+            deactivate_data.save()
+            return redirect('index')
+
+
+# This class view is used to delete user account
+class DeleteAccountClassView(View):
+    def get(self, request, id):
+        user_data = RegisterUser.objects.get(pk=id)
+        user_data.delete()
+        return redirect('index')

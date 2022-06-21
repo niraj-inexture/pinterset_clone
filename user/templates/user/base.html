@@ -25,7 +25,7 @@
                     <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'upload-image' %}active{% endif %}" href="{% url 'upload-image' %}">Upload Image</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="#">Trending Topics</a>
+                    <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'trending-topic' %}active{% endif %}" href="{% url 'trending-topic' %}">Trending Topics</a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-outline-primary me-2" href="#">Chat</a>

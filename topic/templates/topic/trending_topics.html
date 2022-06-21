@@ -1,0 +1,24 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block title %}
+    Trending Topics
+{% endblock title %}
+{% block link %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
+{% endblock link %}
+{% block body %}
+    {{block.super}}
+    <h4 class="text-center m-3 text-bold">Trending Topics</h4>
+    {% if trending_topic_data.exists %}
+         <div class="container m-auto">
+             <div class="row">
+                {% for topic in trending_topic_data %}
+                    <a class="col-md-3 d-inline m-auto btn btn-info p-5 fs-3" href="{% url 'trending-topic-images' topic.id %}">{{topic}}</a>
+                {% endfor %}
+             </div>
+         </div>
+    {% else %}
+        <h3 class="alert alert-success text-center text-bg-danger p-1 m-3">No data available</h3>
+    {% endif %}
+{% endblock body %}

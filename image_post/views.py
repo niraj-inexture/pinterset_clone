@@ -29,7 +29,6 @@ class ImageDetailView(View):
                                                         image_type='Public')
             save_data = ImageSaveForm(initial={'user': request.user.id, 'image_path': pk, 'is_save': True})
             save_user_data = ImageSave.objects.filter(user=request.user.id, image_path=pk).first()
-            print("save_user_data", save_user_data)
 
             return render(request, 'image_post/imagestore_detail.html',
                           {"one_data": img_data, 'all_data': all_related_img, 'forms': save_data,

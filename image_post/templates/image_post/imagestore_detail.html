@@ -15,7 +15,7 @@
                 <img width=700px height=700px src="{{ one_data.image_path.url }}">
             </div>
             <div class="col-sm-5 p-2">
-                <div class="mb-5">
+                <div class="mb-4">
                     <a class="btn btn-primary" href="{% url 'home' %}">Back</a>
                     <button onclick="download()" class="btn btn-primary">Download</button>
                     {% if save_user_data %}
@@ -33,6 +33,18 @@
                 <p>Image category : {{one_data.topic}}</p>
                 <p>Uploaded by : {{one_data.user}}</p>
                 <p>Upload date : {{one_data.image_upload_date}}</p>
+                <div class="row">
+                    <div class="col-md-1 gx-1">
+                        <img class="rounded-circle" src="{% static 'user/img/image1.jpg' %}" height="50px" width="50px">
+                    </div>
+                    <div class="col-md-5">
+                        <h5>{{one_data.user}}</h5>
+                        <h6>5 followers</h6>
+                    </div>
+                    <div class="col-md-3 m-auto">
+                        <input type="button" class="btn btn-primary p-2" value="Follow">
+                    </div>
+                </div>
                 <h3>Description</h3>
                 <p>{{one_data.description}}</p>
             </div>

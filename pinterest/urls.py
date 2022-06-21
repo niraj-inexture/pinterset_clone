@@ -8,7 +8,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.IndexClassView.as_view(),name='index'),
     path('user/',include('user.urls')),
-    path('img/',include('image_post.urls'))
+    path('img/',include('image_post.urls')),
+    path('topic/',include('topic.urls'))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

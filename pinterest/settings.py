@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import cloudinary.api
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,8 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pinterest-clone-niraj.herokuapp.com','127.0.0.1']
-
+ALLOWED_HOSTS = ['pinterest-clone-niraj.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -77,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pinterest.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -98,7 +97,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -107,10 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME':'user.validators.PasswordValidator',
+        'NAME': 'user.validators.PasswordValidator',
     }
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -123,14 +120,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR/'static'
+STATIC_ROOT = BASE_DIR / 'static'
 
-MEDIA_ROOT = BASE_DIR/'media'
+MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = 'media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -143,9 +139,9 @@ AUTHENTICATION_BACKEND = ['django.contrib.auth.backends.ModelBackend',
                           'registration.authentication.EmailAuthBackend'
                           ]
 cloudinary.config(
-  cloud_name = os.environ.get("cloud_name"),
-  api_key = os.environ.get("api_key"),
-  api_secret = os.environ.get("api_secret")
+    cloud_name=os.environ.get("cloud_name"),
+    api_key=os.environ.get("api_key"),
+    api_secret=os.environ.get("api_secret")
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
