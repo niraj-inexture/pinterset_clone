@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary.api
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -40,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'topic',
-    'crispy_forms'
+    'crispy_forms',
+    'image_post',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -139,6 +142,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKEND = ['django.contrib.auth.backends.ModelBackend',
                           'registration.authentication.EmailAuthBackend'
                           ]
+cloudinary.config(
+  cloud_name = os.environ.get("cloud_name"),
+  api_key = os.environ.get("api_key"),
+  api_secret = os.environ.get("api_secret")
+)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

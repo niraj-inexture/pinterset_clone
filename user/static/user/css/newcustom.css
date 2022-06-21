@@ -1,0 +1,36 @@
+* { box-sizing: border-box; }
+
+body { font-family: sans-serif; }
+
+.grid {
+  /* center */
+  margin: 0 auto;
+}
+
+/* clearfix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- grid-item ---- */
+
+.grid-item,.img-zero{
+  width: 240px;
+  height: 230px;
+  float: left;
+  border: 1px solid #333;
+  margin-top:15px;
+}
+
+.img-zero{
+margin-top:0;
+}
+.grid-item--height2,.img-one { height: 250px}
+.grid-item--height3,.img-two { height: 290px}
+
+
+.grid-item-one{
+margin-bottom:250px;
+}

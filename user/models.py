@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 from PIL import Image
+from django.db import models
+
 
 COUNTRY_CHOICES = (
     ("India", "India"),
@@ -30,9 +31,8 @@ class User(AbstractUser):
 
 class RegisterUser(User):
     gender = models.CharField(choices=GENDER_CHOICES, max_length=10)
-    profile_image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    profile_image = models.ImageField(upload_to='profile_image',default='default.jpg')
     country = models.CharField(choices=COUNTRY_CHOICES, max_length=30)
-    rejection_count = models.IntegerField(default=0)
 
     class Meta:
         abstract = False
@@ -44,4 +44,3 @@ class RegisterUser(User):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.profile_image.path)
-

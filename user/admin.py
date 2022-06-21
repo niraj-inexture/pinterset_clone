@@ -6,8 +6,12 @@ from .models import RegisterUser
 
 class RegisterUserAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'username', 'first_name', 'last_name', 'email', 'is_active', 'gender', 'country', 'rejection_count',
+        'id', 'username', 'first_name', 'last_name', 'email', 'is_active', 'gender', 'country',
         'profile_image', 'is_superuser', 'last_login')
 
 
 admin.site.register(RegisterUser, RegisterUserAdmin)
+
+
+
+

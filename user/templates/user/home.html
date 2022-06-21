@@ -1,42 +1,21 @@
 {% extends 'user/base.html' %}
+{% load static %}
+{% load cloudinary %}
 {% block title %}
     Home
 {% endblock title %}
+{% block link %}
+  {{block.super}}
+<link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
+{% endblock link %}
 {% block body %}
-<nav class="navbar navbar-expand-lg bg-black">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item hv">
-                    <a class="btn btn-outline-primary me-2 active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="#">Upload Image</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="#">Trending Topics</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="#">Chat</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="{% url 'profile' %}">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="{% url 'change-password' %}">Update Password</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="{% url 'logout' %}">Logout</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </form>
+    {{block.super}}
+    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "isFitWidth": true,"gutter":15}'>
+      {% for u_image in images %}
+        <div class="grid-item grid-item--height2">
+          <a href="{% url 'image-detail' u_image.id %}"><img src="{{u_image.image_path.url}}" class="img-one img-zero"></a>
         </div>
+      {% endfor %}
     </div>
-</nav>
 {% endblock body %}
+

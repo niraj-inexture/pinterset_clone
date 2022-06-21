@@ -5,12 +5,19 @@ from .forms import ModelFormRegistration, ModelFormLogin, ProfileUpdateForm, Pas
 from .authentication import EmailAuthBackend
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from image_post.models import ImageStore
+
 
 # Create your views here.
 
 class HomeClassView(View):
     def get(self, request):
-        return render(request, 'user/home.html')
+        if request.user.is_authenticated:
+            get_image = ImageStore.objects.filter(approve_status=True, image_type='Public')
+            return render(request, 'user/home.html', {'images': get_image})
+        else:
+            return redirect('index')
+
 
 # This class view is used to render index page
 class IndexClassView(View):
@@ -19,6 +26,7 @@ class IndexClassView(View):
             return redirect('home')
         else:
             return render(request, 'user/index.html')
+
 
 # This class view is used to render register page and register user
 class RegisterClassView(View):
@@ -33,6 +41,7 @@ class RegisterClassView(View):
             return redirect('login')
         else:
             return render(request, 'user/registration.html', {'forms': register})
+
 
 # This view class is used to render login page and login user
 class LoginClassView(View):
@@ -50,10 +59,11 @@ class LoginClassView(View):
                 login(request, user)
                 return redirect('home')
             else:
-                messages.error(request,'Email id or password is wrong!')
+                messages.error(request, 'Email id or password is wrong!')
                 return render(request, 'user/login.html', {'forms': login_user})
         else:
             return render(request, 'user/login.html', {'forms': login_user})
+
 
 # This class view is used to logout user
 class LogoutClassView(View):
@@ -64,42 +74,44 @@ class LogoutClassView(View):
         else:
             return redirect('index')
 
+
 # This class view is used user profile page load and update
 class ProfileClassView(View):
-    def get(self,request):
+    def get(self, request):
         if request.user.is_authenticated:
             profile_form = ProfileUpdateForm(instance=request.user)
             return render(request, 'user/profile.html', {'forms': profile_form})
         else:
             return redirect('index')
 
-    def post(self,request):
-        profile_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user)
+    def post(self, request):
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
         if profile_form.is_valid():
             profile_form.save()
-            messages.success(request,"Profile updated successfully!")
+            messages.success(request, "Profile updated successfully!")
             return redirect('profile')
         else:
             return render(request, 'user/profile.html', {'forms': profile_form})
+
 
 # This class view is used for change password
 class ChangePasswordView(View):
     def get(self, request):
         if request.user.is_authenticated:
             change_pass = PasswordChangeCustomForm(user=request.user)
-            return render(request, 'user/change_password.html', {'forms':change_pass})
+            return render(request, 'user/change_password.html', {'forms': change_pass})
         else:
             return redirect('index')
 
     def post(self, request):
         if request.user.is_authenticated:
-            change_pass = PasswordChangeCustomForm(user=request.user,data=request.POST)
+            change_pass = PasswordChangeCustomForm(user=request.user, data=request.POST)
             if change_pass.is_valid():
                 change_pass.save()
                 update_session_auth_hash(request, change_pass.user)
                 messages.success(request, "Password updated successfully!")
                 return redirect('change-password')
             else:
-                return render(request, 'user/change_password.html', {'forms':change_pass})
+                return render(request, 'user/change_password.html', {'forms': change_pass})
         else:
             return redirect('index')

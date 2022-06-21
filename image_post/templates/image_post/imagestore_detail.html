@@ -1,0 +1,76 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block title %}
+    Image detail
+{% endblock title %}
+{% block link %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
+{% endblock link %}
+{% block body %}
+    {{block.super}}
+    <div class="container">
+        <div class="row mt-3 shadow-lg rounded">
+            <div class="col-sm-7 p-2">
+                <img width=700px height=700px src="{{ one_data.image_path.url }}">
+            </div>
+            <div class="col-sm-5 p-2">
+                <div class="mb-5">
+                    <a class="btn btn-primary" href="{% url 'home' %}">Back</a>
+                    <button onclick="download()" class="btn btn-primary">Download</button>
+                    {% if save_user_data %}
+                    <input type="submit" class="btn btn-primary" id="id_saved" value="Saved" disabled>
+                    {% else %}
+                        <form action="{% url 'image-detail' one_data.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            {% for form in forms.hidden_fields %}
+                                {{form}}
+                            {% endfor %}
+                            <input type="submit" onclick="change()" class="btn btn-primary" id="id_save" value="Save">
+                        </form>
+                    {% endif %}
+                </div>
+                <p>Image category : {{one_data.topic}}</p>
+                <p>Uploaded by : {{one_data.user}}</p>
+                <p>Upload date : {{one_data.image_upload_date}}</p>
+                <h3>Description</h3>
+                <p>{{one_data.description}}</p>
+            </div>
+        </div>
+    </div>
+    <h4 class="text-center m-3 text-bold">More like this</h4>
+    <div class="grid m-3" data-masonry='{ "itemSelector": ".grid-item", "isFitWidth": true,"gutter":15}'>
+      {% for u_image in all_data %}
+      <div class="grid-item grid-item--height2 shadow-lg">
+          <a href="{% url 'image-detail' u_image.id %}"><img src="{{u_image.image_path.url}}" class="img-one img-zero"></a>
+        </div>
+      {% endfor %}
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+function download(){
+        axios({
+        url: '{{one_data.image_path.url}}',
+        method: 'GET',
+        responseType: 'blob',
+    }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'image.jpg');
+        document.body.appendChild(link);
+        link.click();
+    });
+};
+
+function change(){
+ var val = document.getElementById('id_save').getAttribute('id');
+ if (val == "Save"){
+    document.getElementById('id_save').setAttribute('value','Saved');
+    document.getElementById('id_save').setAttribute('disabled',"disabled");
+}
+};
+</script>
+{% include 'image_post/ajax.html' %}
+{% endblock body %}
