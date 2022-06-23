@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
 from django.db import models
@@ -44,3 +45,8 @@ class RegisterUser(User):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.profile_image.path)
+
+
+class FollowPeople(models.Model):
+    user = models.ForeignKey(RegisterUser,on_delete=models.CASCADE, related_name='user')
+    follow_user = models.ForeignKey(RegisterUser,on_delete=models.CASCADE, related_name='follower')

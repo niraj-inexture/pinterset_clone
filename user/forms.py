@@ -113,3 +113,4 @@ class ModelFormDeactivateAccount(forms.ModelForm):
         widgets={
             'is_active': forms.HiddenInput(attrs={'class': 'form-control'}),
         }
+

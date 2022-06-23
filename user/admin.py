@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RegisterUser
+from .models import RegisterUser, FollowPeople
 
 
 # Register your models here.
@@ -11,6 +11,14 @@ class RegisterUserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(RegisterUser, RegisterUserAdmin)
+
+
+class FollowUserAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'user', 'follow_user')
+
+
+admin.site.register(FollowPeople, FollowUserAdmin)
 
 
 

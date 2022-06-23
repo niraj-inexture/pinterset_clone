@@ -35,13 +35,6 @@
                     <input type="submit" class="btn btn-primary" value="update">
                      <a class="btn btn-primary" href="{% url 'home' %}">Back</a>
                 </form>
-                <form method="POST" class="d-inline" action="{% url 'deactivate-account' %}">
-                    {% csrf_token %}
-                    {% for form in deactivate_form.hidden_fields %}
-                        {{form}}
-                    {% endfor %}
-                    <input type="submit" value="deactivate account" class="btn btn-danger">
-                </form>
                 <a class="btn btn-danger" href="{% url 'delete-account' user.id %}">delete account</a>
             </div>
         </div>

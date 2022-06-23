@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from image_post.forms import UploadImageForm, ImageSaveForm, UpdateImageDescriptionForm
 from image_post.models import ImageStore, ImageSave
+from user.models import FollowPeople, RegisterUser
 
 
 # Create your views here.
@@ -20,7 +21,6 @@ class SaveImageDetailView(View):
 
 
 # This class view is used show detail of particular image and save this particular image
-
 class ImageDetailView(View):
     def get(self, request, pk):
         if request.user.is_authenticated:
@@ -29,10 +29,13 @@ class ImageDetailView(View):
                                                         image_type='Public')
             save_data = ImageSaveForm(initial={'user': request.user.id, 'image_path': pk, 'is_save': True})
             save_user_data = ImageSave.objects.filter(user=request.user.id, image_path=pk).first()
+            follower_data = FollowPeople.objects.filter(follow_user=img_data.user.id).count()
+            validate_follow_btn = FollowPeople.objects.filter(user=request.user.id, follow_user=img_data.user.id)
 
             return render(request, 'image_post/imagestore_detail.html',
                           {"one_data": img_data, 'all_data': all_related_img, 'forms': save_data,
-                           'save_user_data': save_user_data})
+                           'save_user_data': save_user_data, 'follower_data': follower_data,
+                           'validate_follow_btn': validate_follow_btn})
         else:
             return redirect('index')
 
@@ -44,7 +47,6 @@ class ImageDetailView(View):
 
 
 # This class view is used to upload image
-
 class UploadImageClassView(View):
     def get(self, request):
         if request.user.is_authenticated:
@@ -63,7 +65,7 @@ class UploadImageClassView(View):
             return render(request, 'image_post/upload_image.html', {'forms': upload_image})
 
 
-# this class view is used to delete particular image
+# This class view is used to delete particular image
 class DeleteSaveImageView(View):
     def post(self, request):
         if request.user.is_authenticated:
@@ -75,7 +77,7 @@ class DeleteSaveImageView(View):
             return redirect('index')
 
 
-# this class view is used to delete all image
+# This class view is used to delete all image
 class DeleteAllSaveImageView(View):
     def post(self, request):
         if request.user.is_authenticated:
@@ -86,6 +88,8 @@ class DeleteAllSaveImageView(View):
         else:
             return redirect('index')
 
+
+# This class view is used to update image description
 class UpdateImageDescriptionView(View):
     def get(self, request, id):
         if request.user.is_authenticated:
@@ -103,3 +107,33 @@ class UpdateImageDescriptionView(View):
             return redirect('save-image')
         else:
             return render(request, 'image_post/update_image_detail.html', {'forms': upload_image})
+
+
+# This class view is used to follow user
+class FollowClassView(View):
+    def post(self, request):
+        if request.user.is_authenticated:
+            user_id = request.POST['uid']
+            follow_user_id = request.POST['fid']
+            user = RegisterUser.objects.get(id=user_id)
+            follow_user = RegisterUser.objects.get(id=follow_user_id)
+            follow = FollowPeople(user=user, follow_user=follow_user)
+            follow.save()
+            total_followers = FollowPeople.objects.filter(follow_user=follow_user_id).count()
+            return JsonResponse({'status': 1, 'data': total_followers})
+        else:
+            return redirect('index')
+
+
+# This class view is used to unfollow user
+class UnfollowClassView(View):
+    def post(self, request):
+        if request.user.is_authenticated:
+            user_id = request.POST['uid']
+            follow_user_id = request.POST['fid']
+            follow = FollowPeople.objects.get(user=user_id, follow_user=follow_user_id)
+            follow.delete()
+            total_followers = FollowPeople.objects.filter(follow_user=follow_user_id).count()
+            return JsonResponse({'status': 1, 'data': total_followers})
+        else:
+            return redirect('index')

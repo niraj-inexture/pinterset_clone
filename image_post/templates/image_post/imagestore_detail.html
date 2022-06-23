@@ -9,6 +9,23 @@
 {% endblock link %}
 {% block body %}
     {{block.super}}
+    <div class="modal fade" id="copyLink" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Image link</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <p id="txt"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary copy-btn">Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
     <div class="container">
         <div class="row mt-3 shadow-lg rounded">
             <div class="col-sm-7 p-2">
@@ -29,20 +46,32 @@
                             <input type="submit" onclick="change()" class="btn btn-primary" id="id_save" value="Save">
                         </form>
                     {% endif %}
+                    <button type="button" class="btn btn-primary share-btn" data-bs-toggle="modal" data-bs-target="#copyLink">Share</button>
                 </div>
                 <p>Image category : {{one_data.topic}}</p>
                 <p>Uploaded by : {{one_data.user}}</p>
                 <p>Upload date : {{one_data.image_upload_date}}</p>
                 <div class="row">
                     <div class="col-md-1 gx-1">
-                        <img class="rounded-circle" src="{% static 'user/img/image1.jpg' %}" height="50px" width="50px">
+                        <img class="rounded-circle" src="{{one_data.user.profile_image.url}}" height="50px" width="50px">
                     </div>
                     <div class="col-md-5">
                         <h5>{{one_data.user}}</h5>
-                        <h6>5 followers</h6>
+                        <h6 id="followers">{{follower_data}} followers</h6>
                     </div>
-                    <div class="col-md-3 m-auto">
-                        <input type="button" class="btn btn-primary p-2" value="Follow">
+                    <div class="col-md-3 follow-div m-auto">
+                        {% if one_data.user.id != request.user.id  %}
+                            <form>
+                                {% csrf_token %}
+                                <input type="hidden" value="{{request.user.id}}" id="user_id">
+                                <input type="hidden" value="{{one_data.user.id}}" id="id_follow_user">
+                                {% if not validate_follow_btn.exists %}
+                                    <input type="button" class="btn btn-primary p-2 btn-follow" value="Follow">
+                                {% else %}
+                                    <input type="button" class="btn btn-primary p-2 btn-unfollow" value="Unfollow">
+                                {% endif %}
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
                 <h3>Description</h3>
@@ -60,8 +89,7 @@
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-
-function download(){
+    function download(){
         axios({
         url: '{{one_data.image_path.url}}',
         method: 'GET',
@@ -75,14 +103,7 @@ function download(){
         link.click();
     });
 };
-
-function change(){
- var val = document.getElementById('id_save').getAttribute('id');
- if (val == "Save"){
-    document.getElementById('id_save').setAttribute('value','Saved');
-    document.getElementById('id_save').setAttribute('disabled',"disabled");
-}
-};
 </script>
-{% include 'image_post/ajax.html' %}
+<script src="{% static 'image_post/js/ajax.js' %}"></script>
+<script src="{% static 'image_post/js/custom.js' %}"></script>
 {% endblock body %}
