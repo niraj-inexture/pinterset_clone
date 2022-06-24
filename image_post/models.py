@@ -28,3 +28,9 @@ class ImageSave(models.Model):
     user = models.ForeignKey(RegisterUser,on_delete=models.CASCADE)
     image_path = models.ForeignKey(ImageStore,on_delete=models.CASCADE)
     is_save = models.BooleanField()
+
+
+class ImageLike(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user_like')
+    like_user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='follower_like')
+    image_path = models.ForeignKey(ImageStore,on_delete=models.CASCADE)

@@ -1,0 +1,35 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% load cloudinary %}
+{% block title %}
+    upload image history
+{% endblock title %}
+{% block link %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
+{% endblock link %}
+{% block body %}
+    {{block.super}}
+    <h4 class="text-center m-3 text-bold">Upload Images</h4>
+    {% if not upload_image_data.exists %}
+        <h3 class="alert alert-success text-center text-bg-danger p-1 m-3">No data available</h3>
+    {% endif %}
+    <div class="grid m-3" data-masonry='{ "itemSelector": ".grid-item", "isFitWidth": true,"gutter":20}'>
+        {% for u_image in upload_image_data %}
+                <div class="grid-item grid-item--height2">
+                    <a href="{% url 'image-detail' u_image.id %}"><img src="{{u_image.image_path.url}}" class="img-one img-zero"></a>
+                         <form class="d-inline">
+                            {% csrf_token %}
+                            <input type="button" data-img-id="{{ u_image.id}}"  class="btn btn-danger mt-3 btn-history-del" value="Delete">
+                        </form>
+                            <a href="{% url 'update-save-post' u_image.id %}" class="btn btn-primary mt-3">Update</a>
+                        {% if u_image.approve_status %}
+                            <button class="btn btn-success mt-3" disabled>Approved</button>
+                        {% else %}
+                            <button class="btn btn-danger mt-3" disabled>Pending</button>
+                        {% endif %}
+                </div>
+        {% endfor %}
+
+<script src="{% static 'image_post/js/ajax.js' %}"></script>
+{% endblock body %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ImageStore, ImageSave
+from .models import ImageStore, ImageSave, ImageLike
 
 
 # Register your models here.
@@ -20,3 +20,11 @@ class ImageSaveAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ImageSave,ImageSaveAdmin)
+
+
+class ImageLikeAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'user', 'like_user')
+
+
+admin.site.register(ImageLike,ImageLikeAdmin)

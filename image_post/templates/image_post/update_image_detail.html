@@ -17,7 +17,7 @@
                             {{form}} <span class="errorlist">{{form.errors|striptags}}</span></p>
                     {% endfor %}
                     <input type="submit" value="Update" class="btn btn-primary">
-                    <a class=" btn btn-primary" href="{% url 'save-image' %}" role="button">Back</a>
+                    <a class=" btn btn-primary" href="{% url 'image-history' %}" role="button">Back</a>
                 </form>
                 {% if messages %}
                     {% for message in messages %}

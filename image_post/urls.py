@@ -9,5 +9,8 @@ urlpatterns = [
     path('delete-all-save-post/',views.DeleteAllSaveImageView.as_view(),name='delete-all-save-post'),
     path('update-save-post/<int:id>',views.UpdateImageDescriptionView.as_view(),name='update-save-post'),
     path('follow/', views.FollowClassView.as_view(),name='follow'),
-    path('unfollow/', views.UnfollowClassView.as_view(),name='unfollow')
+    path('unfollow/', views.UnfollowClassView.as_view(),name='unfollow'),
+    path('image-history/',views.ImageHistoryClassView.as_view(),name='image-history'),
+    path('like/', views.LikeClassView.as_view(),name='like'),
+    path('unlike/', views.UnlikeClassView.as_view(),name='unlike'),
 ]

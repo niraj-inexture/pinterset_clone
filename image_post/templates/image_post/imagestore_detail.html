@@ -74,7 +74,25 @@
                         {% endif %}
                     </div>
                 </div>
-                <h3>Description</h3>
+                <div class="row mt-2 like-div">
+                    <div class="col-md-3 gy-2">
+                        <h4 id="likes">{{one_data.like_count}} likes</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <form>
+                            {% csrf_token %}
+                            <input type="hidden" value="{{one_data.user.id}}" id="user">
+                            <input type="hidden" value="{{request.user.id}}" id="like_user_id">
+                            <input type="hidden" value="{{one_data.id}}" id="image_id">
+                             {% if not validate_like_btn.exists %}
+                                <input type="button" class="btn btn-primary p-2 btn-like ml-3" value="Like">
+                            {% else %}
+                                <input type="button" class="btn btn-primary p-2 btn-unlike ml-3" value="Unlike">
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+                <h3 class="mt-3">Description:</h3>
                 <p>{{one_data.description}}</p>
             </div>
         </div>

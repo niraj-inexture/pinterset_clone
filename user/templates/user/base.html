@@ -34,7 +34,7 @@
                     <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'save-image' %}active{% endif %}" href="{% url 'save-image' %}">Save Images</a>
                 </li>
                  <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="#">Uploaded Images History</a>
+                    <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'image-history' %}active{% endif %}" href="{% url 'image-history' %}">Uploaded Images History</a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}">Profile</a>

@@ -33,9 +33,6 @@
                         {% csrf_token %}
                         <input type="button" data-sid="{{ u_image.image_path.id}}"  class="btn btn-danger mt-3 btn-del" value="Delete">
                     </form>
-                    {% if u_image.image_path.user.id == request.user.id %}
-                        <a href="{% url 'update-save-post' u_image.image_path.id %}" class="btn btn-primary mt-3">Update</a>
-                    {% endif %}
             </div>
         {% endfor %}
     </div>
