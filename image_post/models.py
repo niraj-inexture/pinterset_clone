@@ -19,7 +19,6 @@ class ImageStore(models.Model):
     description = models.TextField()
     image_path = CloudinaryField('image')
     approve_status = models.BooleanField(default=False)
-    like_count = models.IntegerField(default=0)
     image_type = models.CharField(choices=IMAGE_TYPE, max_length=15)
     image_upload_date = models.DateField(default=timezone.now)
 
@@ -34,3 +33,9 @@ class ImageLike(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user_like')
     like_user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='follower_like')
     image_path = models.ForeignKey(ImageStore,on_delete=models.CASCADE)
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    image_path = models.ForeignKey(ImageStore, on_delete=models.CASCADE)
+    comment = models.TextField()

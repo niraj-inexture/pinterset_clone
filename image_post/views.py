@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from image_post.forms import UploadImageForm, ImageSaveForm, UpdateImageDescriptionForm
-from image_post.models import ImageStore, ImageSave, ImageLike
+from image_post.models import ImageStore, ImageSave, ImageLike, Comment
 from topic.models import Topic
 from user.models import FollowPeople, RegisterUser
 
@@ -34,10 +34,13 @@ class ImageDetailView(View):
             validate_follow_btn = FollowPeople.objects.filter(user=request.user.id, follow_user=img_data.user.id)
             validate_like_btn = ImageLike.objects.filter(user=img_data.user.id, like_user=request.user.id,
                                                          image_path=img_data.id)
+            total_likes = ImageLike.objects.filter(image_path=pk).count()
+            comment_data = Comment.objects.filter(image_path=pk)
             return render(request, 'image_post/imagestore_detail.html',
                           {"one_data": img_data, 'all_data': all_related_img, 'forms': save_data,
                            'save_user_data': save_user_data, 'follower_data': follower_data,
-                           'validate_follow_btn': validate_follow_btn, 'validate_like_btn': validate_like_btn})
+                           'validate_follow_btn': validate_follow_btn, 'validate_like_btn': validate_like_btn,
+                           'comment_data':comment_data,'total_likes':total_likes})
         else:
             return redirect('index')
 
@@ -168,8 +171,6 @@ class LikeClassView(View):
             follow = ImageLike(user=user, like_user=like_user, image_path=like_img)
             follow.save()
             total_likes = ImageLike.objects.filter(image_path=like_img).count()
-            like_img.like_count = total_likes
-            like_img.save()
             total_topic_like = Topic.objects.get(id=like_img.topic.id)
             like = total_topic_like.total_likes
             like += 1
@@ -191,8 +192,6 @@ class UnlikeClassView(View):
             follow = ImageLike.objects.get(user=user_id, like_user=like_user_id, image_path=img_id)
             follow.delete()
             total_likes = ImageLike.objects.filter(image_path=img_id).count()
-            like_img.like_count = total_likes
-            like_img.save()
             total_topic_like = Topic.objects.get(id=like_img.topic.id)
             like = total_topic_like.total_likes
             like -= 1
@@ -201,3 +200,23 @@ class UnlikeClassView(View):
             return JsonResponse({'status': 1, 'data': total_likes})
         else:
             return redirect('index')
+
+
+# This view class is used to add comment
+class CommentClassView(View):
+    def post(self, request):
+        user_id = request.POST['uid']
+        img_id = request.POST['imgid']
+        comment = request.POST['comment']
+        img_obj = ImageStore.objects.get(id=img_id)
+        Comment(user=request.user, image_path=img_obj, comment=comment).save()
+        return JsonResponse({'status': 1})
+
+
+# This class view is used to delete comment
+class DeleteCommentClassView(View):
+    def post(self, request):
+        comment = request.POST['cid']
+        cmt = Comment.objects.get(id=comment)
+        cmt.delete()
+        return JsonResponse({'status': 1})

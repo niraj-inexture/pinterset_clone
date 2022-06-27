@@ -7,7 +7,7 @@ from .models import ImageStore, ImageSave, ImageLike
 
 class ImageAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'user_id', 'topic_id', 'description', 'image_path', 'image_type', 'like_count', 'approve_status',
+        'id', 'user_id', 'topic_id', 'description', 'image_path', 'image_type', 'approve_status',
         'image_upload_date')
 
 

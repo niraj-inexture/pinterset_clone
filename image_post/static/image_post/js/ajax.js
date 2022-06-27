@@ -135,4 +135,46 @@ $(".like-div").on("click",'.btn-unlike',function(){
     })
   });
 
+$(".comment-div").click(function(e){
+    e.preventDefault();
+    var comment = $('#comment').val()
+    console.log(comment)
+    var u_id = $('#comment_user_id').val()
+    var i_id = $('#comment_image_id').val()
+    console.log(u_id)
+    console.log(i_id)
+    let csr = $("input[name=csrfmiddlewaretoken").val();
+    mydata = {comment:comment,uid:u_id,imgid:i_id,csrfmiddlewaretoken:csr}
+    $.ajax({
+        url: "/img/comment/",
+        method: "POST",
+        data: mydata,
+        success:function(data){
+            console.log(data)
+            if (data.status == 1){
+                $('#commemtdata')[0].reset();
+                location.reload()
+            }
+        }
+    })
+});
+
+
+$(".cmt-delete").click(function(e){
+    e.preventDefault();
+    var c_id = $('#del-comment-btn').attr("comment-data")
+    let csr = $("input[name=csrfmiddlewaretoken").val();
+    mydata = {cid:c_id,csrfmiddlewaretoken:csr}
+    $.ajax({
+        url: "/img/delete-comment/",
+        method: "POST",
+        data: mydata,
+        success:function(data){
+            console.log(data)
+            if (data.status == 1){
+            location.reload()
+            }
+        }
+    })
+});
   });
