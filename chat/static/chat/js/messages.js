@@ -6,7 +6,7 @@ if (loc.protocol === 'https:'){
 console.log(wsStart)
 let endpoint = wsStart + location.host + location.pathname
 
-let socket = new WebSocket(endpoint,'echo-protocol')
+let socket = new WebSocket(endpoint)
 let input_message = $('#input-message')
 let message_body = $('.msg_card_body')
 let send_message_form = $('#message-form')
