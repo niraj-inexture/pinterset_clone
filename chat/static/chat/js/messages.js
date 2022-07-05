@@ -96,7 +96,6 @@ $('.contact-li').on('click', function (){
     $('.contacts .active').removeClass('active')
     $(this).addClass('active')
 
-    // message wrappers
     let chat_id = $(this).attr('chat-id')
     $('.messages-wrapper.is_active').removeClass('is_active')
     $('.messages-wrapper[chat-id="' + chat_id +'"]').addClass('is_active')
@@ -113,3 +112,22 @@ function get_active_thread_id(){
     let thread_id = chat_id.replace('chat_', '')
     return thread_id
 }
+
+$(document).ready(function(){
+    $(".chat-div").on("click",'.chat-del-btn',function(){
+    let t_id = $(this).attr("thread-id");
+    let csr = $("input[name=csrfmiddlewaretoken").val();
+    mythis=this
+    mydata = {thread_id:t_id, csrfmiddlewaretoken:csr}
+    $.ajax({
+        url: "/chat/delete-chat/",
+        method: "POST",
+        data: mydata,
+        success:function(data){
+            if (data.status == 1){
+            location.reload()
+            }
+        }
+    })
+  });
+})
