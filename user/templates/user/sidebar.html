@@ -1,0 +1,46 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% load cloudinary %}
+{% block title %}
+    images
+{% endblock title %}
+{% block link %}
+  {{block.super}}
+<link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
+{% endblock link %}
+{% block body %}
+    {{block.super}}
+    <div class="container-fluid">
+    <div class="row">
+        <nav class="col-sm-2 bg-info sidebar py-5">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                        <li class="nav-item">
+                        <a class="nav-link active text-white {% if request.resolver_match.url_name == 'profile' %}active_bg{% endif %}" href="{% url 'profile' %}" aria-current="page">Profile</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active text-white" href="{% url 'deactivate-account' request.user.id %}">Deactivate Account</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link text-white {% if request.resolver_match.url_name == 'image-history' %}active_bg{% endif %}" href="{% url 'image-history' %}">Uploaded images history</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link text-white {% if request.resolver_match.url_name == 'change-password' %}active_bg{% endif %}" href="{% url 'change-password' %}">Update Password</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link text-white {% if request.resolver_match.url_name == 'show-board' %}active_bg{% endif %}" href="{% url 'show-board' %}">Boards</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link text-white {% if request.resolver_match.url_name == 'save-image' %}active_bg{% endif %}" href="{% url 'save-image' %}">Save images</a>
+                      </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="col-sm-10">
+            {% block div %}
+            {% endblock div %}
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

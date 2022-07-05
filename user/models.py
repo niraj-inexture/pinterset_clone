@@ -1,8 +1,7 @@
-
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
 from django.db import models
-
+from topic.models import Topic
 
 COUNTRY_CHOICES = (
     ("India", "India"),
@@ -32,7 +31,7 @@ class User(AbstractUser):
 
 class RegisterUser(User):
     gender = models.CharField(choices=GENDER_CHOICES, max_length=10)
-    profile_image = models.ImageField(upload_to='profile_image',default='default.jpg')
+    profile_image = models.ImageField(upload_to='profile_image', default='default.jpg')
     country = models.CharField(choices=COUNTRY_CHOICES, max_length=30)
 
     class Meta:
@@ -48,5 +47,13 @@ class RegisterUser(User):
 
 
 class FollowPeople(models.Model):
-    user = models.ForeignKey(RegisterUser,on_delete=models.CASCADE, related_name='user')
-    follow_user = models.ForeignKey(RegisterUser,on_delete=models.CASCADE, related_name='follower')
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user')
+    follow_user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='follower')
+
+
+class Boards(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+
+

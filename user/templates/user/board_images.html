@@ -1,0 +1,30 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block title %}
+    board images
+{% endblock title %}
+{% block link %}
+  {{block.super}}
+<link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
+{% endblock link %}
+{% block body %}
+<h4 class="text-center m-3 text-bold">Saved Images</h4>
+    <div class="d-grid gap-2 d-md-flex m-3 justify-content-md-end">
+        <a class="btn btn-primary" href="{% url 'create-board' %}">Back</a>
+    </div>
+    {% if boards_images.exists %}
+        <div class="grid m-3" data-masonry='{ "itemSelector": ".grid-item", "isFitWidth": true,"gutter":20}'>
+        {% for u_image in boards_images %}
+            <div class="grid-item grid-item--height2">
+                <a href="{% url 'image-detail' u_image.image_post.id %}"><img src="{{u_image.image_post.image_path.url}}" class="img-one img-zero"></a>
+                     <form class="delete-board-form" class="d-inline">
+                        {% csrf_token %}
+                        <input type="button" data-imgid="{{ u_image.image_post.id}}"  class="btn btn-danger mt-3 btn-board-del" value="Delete">
+                    </form>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <h3 class="alert alert-success text-center text-bg-danger p-1 m-3">No data available</h3>
+    {% endif %}
+{% endblock body %}

@@ -7,7 +7,14 @@
     <title>{% block title %}{% endblock title %}</title>
     {% block link %}
     <link rel="stylesheet" type="text/css" href="{% static 'user/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{% static 'user/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/css/owl.theme.default.min.css' %}">
+
     <link rel="stylesheet" type="text/css" href="{% static 'user/css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'chat/css/messages.css' %}">
     {% endblock link %}
 </head>
 <body>
@@ -29,38 +36,36 @@
                     <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'trending-topic' %}active{% endif %}" href="{% url 'trending-topic' %}">Trending Topics</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2" href="#">Chat</a>
-                </li>
-                 <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'save-image' %}active{% endif %}" href="{% url 'save-image' %}">Save Images</a>
-                </li>
-                 <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'image-history' %}active{% endif %}" href="{% url 'image-history' %}">Uploaded Images History</a>
+                    <a class="btn btn-outline-primary me-2" href="{% url 'chat-page' %}">Chat</a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'change-password' %}active{% endif %}" href="{% url 'change-password' %}">Update Password</a>
-                </li>
-                <li class="nav-item">
                     <a class="btn btn-outline-primary me-2 {% if request.resolver_match.url_name == 'logout' %}active{% endif %}" href="{% url 'logout' %}">Logout</a>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="d-flex" role="search" method="post" action="{% url 'search-topic' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="topic-search" name="search" required="required">
                 <button class="btn btn-outline-primary" type="submit">Search</button>
             </form>
         </div>
     </div>
 </nav>
+
+{% endblock body %}
+
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="{% static 'user/js/jquery.js' %}"></script>
 <script src="{% static 'user/js/popper.js' %}"></script>
 <script src="{% static 'user/js/bootstrap.min.js' %}"></script>
-{% endblock body %}
-
-
-
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="{% static 'user/js/owl.carousel.min.js' %}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+<script src="{% static 'user/js/custom.js' %}"></script>
+<script src="{% static 'image_post/js/ajax.js' %}"></script>
+<script src="{% static 'image_post/js/custom.js' %}"></script>
+<script src="{% static 'chat/js/messages.js' %}"></script>
 </body>
 </html>

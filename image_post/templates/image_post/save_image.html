@@ -1,4 +1,4 @@
-{% extends 'user/base.html' %}
+{% extends 'user/sidebar.html' %}
 {% load static %}
 {% load cloudinary %}
 {% block title %}
@@ -8,8 +8,7 @@
     {{block.super}}
     <link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
 {% endblock link %}
-{% block body %}
-    {{block.super}}
+{% block div %}
     <h4 class="text-center m-3 text-bold">Saved Images</h4>
     {% if save_img_data.exists %}
         <div class="container-fluid">
@@ -36,5 +35,4 @@
             </div>
         {% endfor %}
     </div>
-<script src="{% static 'image_post/js/ajax.js' %}"></script>
-{% endblock body %}
+{% endblock div %}

@@ -47,7 +47,22 @@
                         </form>
                     {% endif %}
                     <button type="button" class="btn btn-primary share-btn" data-bs-toggle="modal" data-bs-target="#copyLink">Share</button>
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle mt-2" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                        Add to board
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                          {% for topics in boards_name %}
+                        <li><button class="dropdown-item  board-btn" type="button" board-id="{{topics.topic.id}}" image-id="{{one_data.id}}">{{topics.topic.topic_name}}</button></li>
+                           {% endfor %}
+                      </ul>
+                    </div>
                 </div>
+                 {% if messages %}
+                    {% for message in messages %}
+                        <p class="errorlist">{{message}}</p>
+                    {% endfor %}
+                {% endif %}
                 <p>Image category : {{one_data.topic}}</p>
                 <p>Uploaded by : {{one_data.user}}</p>
                 <p>Upload date : {{one_data.image_upload_date}}</p>
@@ -129,10 +144,9 @@
                         </div>
                         <div class="col-md-1 comment-div">
                             <button class="btn btn-primary add-comment-btn" id="add-comment-btn">add</button>
-                            </div>
-                         </div>
-                        </form>
-
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -161,6 +175,4 @@
     });
 };
 </script>
-<script src="{% static 'image_post/js/ajax.js' %}"></script>
-<script src="{% static 'image_post/js/custom.js' %}"></script>
 {% endblock body %}

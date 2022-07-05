@@ -1,0 +1,20 @@
+{% extends 'user/base.html' %}
+{% block title %}
+    success activate
+{% endblock title %}
+{% block body %}
+<h1 class="text-center">Email verify message</h1>
+<div class="container mt-5">
+    {% if message.tags %} class="{{ message.tags }}"{% endif %}
+    <div class="row">
+        <div class="col-md-10 m-auto">
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="alert alert-success text-center text-bg-success p-1" role="alert">{{message}}</p>
+                {% endfor %}
+            {% endif %}
+            <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+        </div>
+    </div>
+</div>
+{% endblock body %}

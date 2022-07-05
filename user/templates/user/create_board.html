@@ -1,0 +1,63 @@
+{% extends 'user/sidebar.html' %}
+{% load static %}
+{% block title %}
+    change password
+{% endblock title %}
+{% block link %}
+  {{block.super}}
+<link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
+{% endblock link %}
+{% block div %}
+    <h2 class="text-center">Create Board</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 m-auto">
+                <div class="form-group">
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        {{forms.non_field_errors}}
+                        {% for form in board.visible_fields %}
+                            <p>{{form.label_tag}} {{form}} <span class="errorlist">{{form.errors|striptags}}</span></p>
+                        {% endfor %}
+                        {% for form in board.hidden_fields %}
+                            <p>{{form}}</p>
+                        {% endfor %}
+                        <input type="submit" value="Create" class="btn btn-primary create-board-btn">
+                        <a class="btn btn-primary" href="{% url 'home' %}">Back</a>
+                    </form>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p id="messages" class="alert alert-success text-center text-bg-success" role="alert">{{message}}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+ <div class="container-fluid my-5">
+        <h1 class="text-center fw-bold display-1 mb-5">Boards</h1>
+        <div class="row">
+            {% if boards_name %}
+            <div class="col-12 m-auto">
+                <div class="owl-carousel owl-theme">
+                     {% for boards in boards_name %}
+                    <div class="item mb-4">
+                        <div class="card border-0 shadow">
+                             <a class="text-decoration-none" href="{% url 'boards-image' boards.topic.id %}">  <p class="mt-5 text-center text-info fs-1 ">{{boards.topic.topic_name}}</p></a>
+                            <div class="card-body">
+                                <div class="card-title text-center">
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <input class="btn btn-primary mt-3 board-del-btn" type="submit" topic-del-id="{{boards.topic.id}}" value="del">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock div %}

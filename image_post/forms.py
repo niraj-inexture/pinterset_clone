@@ -4,7 +4,7 @@ from topic.models import Topic
 
 
 class UploadImageForm(forms.ModelForm):
-    topic = forms.ModelChoiceField(queryset=Topic.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}))
+    topic = forms.ModelMultipleChoiceField(queryset=Topic.objects.all().order_by('-total_likes'), widget=forms.SelectMultiple(attrs={'class': 'form-select'}))
 
     class Meta:
         model = ImageStore
@@ -36,7 +36,8 @@ class ImageSaveForm(forms.ModelForm):
 
 
 class UpdateImageDescriptionForm(forms.ModelForm):
-    topic = forms.ModelChoiceField(queryset=Topic.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}))
+    topic = forms.ModelMultipleChoiceField(queryset=Topic.objects.all().order_by('-total_likes'),
+                                           widget=forms.SelectMultiple(attrs={'class': 'form-select'}))
 
     class Meta:
         model = ImageStore

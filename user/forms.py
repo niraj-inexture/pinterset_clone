@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
-from .models import RegisterUser
+
+from topic.models import Topic
+from .models import RegisterUser, Boards
 
 GENDER_CHOICES = [
     ("Male", 'Male'),
@@ -38,15 +40,17 @@ class ModelFormRegistration(UserCreationForm):
             raise forms.ValidationError('Email id already exists')
         return uemail
 
-    # This method is used to validate firstname
     def clean_first_name(self):
+        """This method is used to validate firstname"""
+
         fname = self.cleaned_data['first_name']
         if not fname.isalpha():
             raise forms.ValidationError('Firstname only contain alphabet')
         return fname
 
-    # This method is used to validate lastname
     def clean_last_name(self):
+        """This method is used to validate lastname"""
+
         lname = self.cleaned_data['last_name']
         if not lname.isalpha():
             raise forms.ValidationError('Firstname only contain alphabet')
@@ -106,11 +110,22 @@ class PasswordChangeCustomForm(PasswordChangeForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
-class ModelFormDeactivateAccount(forms.ModelForm):
+class ModelFormActivateAccount(forms.ModelForm):
     class Meta:
         model = RegisterUser
-        fields = ['is_active']
-        widgets={
-            'is_active': forms.HiddenInput(attrs={'class': 'form-control'}),
+        fields = ['email']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
 
+
+class CreateBoardForm(forms.ModelForm):
+    topic = forms.ModelChoiceField(queryset=Topic.objects.all().order_by('-total_likes'),
+                                   widget=forms.Select(attrs={'class': 'form-select'}))
+
+    class Meta:
+        model = Boards
+        fields = ['topic', 'user']
+        widgets = {
+            'user': forms.HiddenInput(attrs={'class': 'form-control'}),
+        }

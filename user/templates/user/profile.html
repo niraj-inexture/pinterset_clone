@@ -1,8 +1,8 @@
-{% extends 'user/base.html' %}
+{% extends 'user/sidebar.html' %}
 {% block title %}
     profile
 {% endblock title %}
-{% block body %}
+{% block div %}
 {% if messages %}
     {% for message in messages %}
         <div class="container">
@@ -25,8 +25,8 @@
     </div>
     <div class="row">
         <div class="col-md-6 m-auto">
-            <div class="form-group">
-                <form method="POST" novalidate enctype="multipart/form-data" class="d-inline">
+            <div class="form-group update-form">
+                <form method="post" novalidate enctype="multipart/form-data" class="d-inline">
                     {% csrf_token %}
                     {{forms.non_field_errors}}
                     {% for form in forms %}
@@ -40,4 +40,4 @@
         </div>
     </div>
 </div>
-{% endblock body %}
+{% endblock div %}

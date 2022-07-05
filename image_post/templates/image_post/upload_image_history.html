@@ -1,4 +1,4 @@
-{% extends 'user/base.html' %}
+{% extends 'user/sidebar.html' %}
 {% load static %}
 {% load cloudinary %}
 {% block title %}
@@ -8,8 +8,7 @@
     {{block.super}}
     <link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
 {% endblock link %}
-{% block body %}
-    {{block.super}}
+{% block div %}
     <h4 class="text-center m-3 text-bold">Upload Images</h4>
     {% if not upload_image_data.exists %}
         <h3 class="alert alert-success text-center text-bg-danger p-1 m-3">No data available</h3>
@@ -30,6 +29,4 @@
                         {% endif %}
                 </div>
         {% endfor %}
-
-<script src="{% static 'image_post/js/ajax.js' %}"></script>
-{% endblock body %}
+{% endblock div %}

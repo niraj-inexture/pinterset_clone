@@ -1,0 +1,24 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% load cloudinary %}
+{% block title %}
+    images
+{% endblock title %}
+{% block link %}
+  {{block.super}}
+<link rel="stylesheet" type="text/css" href="{% static 'user/css/newcustom.css' %}">
+{% endblock link %}
+{% block body %}
+    {{block.super}}
+    {% if images.exists %}
+    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "isFitWidth": true,"gutter":15}'>
+      {% for u_image in images %}
+        <div class="grid-item grid-item--height2">
+          <a href="{% url 'image-detail' u_image.id %}"><img src="{{u_image.image_path.url}}" class="img-one img-zero"></a>
+        </div>
+      {% endfor %}
+    </div>
+    {% else %}
+        <h2 class="text-center">No data available</h2>
+    {% endif %}
+{% endblock body %}

@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'image_post',
     'cloudinary',
+    'chat',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +77,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pinterest.wsgi.application'
+# WSGI_APPLICATION = 'pinterest.wsgi.application'
+ASGI_APPLICATION = 'pinterest.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -151,3 +154,9 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND':'channels.layers.InMemoryChannelLayer',
+    }
+}

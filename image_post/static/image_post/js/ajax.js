@@ -2,7 +2,6 @@ $(document).ready(function(){
 
 $(".grid-item").on("click",'.btn-del',function(){
     let id = $(this).attr("data-sid");
-    console.log(id)
     let csr = $("input[name=csrfmiddlewaretoken").val();
     mythis=this
     mydata = {sid:id, csrfmiddlewaretoken:csr}
@@ -21,7 +20,6 @@ $(".grid-item").on("click",'.btn-del',function(){
 
   $(".col-md-2").on("click",'.btn-all-del',function(){
     let id = $(this).attr("data-sid");
-    console.log(id)
     let csr = $("input[name=csrfmiddlewaretoken").val();
     mythis=this
     mydata = {uid:id, csrfmiddlewaretoken:csr}
@@ -96,7 +94,6 @@ $(".grid-item").on("click",'.btn-del',function(){
 
   $(".like-div").on("click",'.btn-like',function(){
     var u_id = $('#user').val()
-    console.log(u_id)
     var f_id = $('#like_user_id').val()
     var i_id = $('#image_id').val()
     let csr = $("input[name=csrfmiddlewaretoken").val();
@@ -138,11 +135,8 @@ $(".like-div").on("click",'.btn-unlike',function(){
 $(".comment-div").click(function(e){
     e.preventDefault();
     var comment = $('#comment').val()
-    console.log(comment)
     var u_id = $('#comment_user_id').val()
     var i_id = $('#comment_image_id').val()
-    console.log(u_id)
-    console.log(i_id)
     let csr = $("input[name=csrfmiddlewaretoken").val();
     mydata = {comment:comment,uid:u_id,imgid:i_id,csrfmiddlewaretoken:csr}
     $.ajax({
@@ -173,6 +167,26 @@ $(".cmt-delete").click(function(e){
             console.log(data)
             if (data.status == 1){
             location.reload()
+            }
+        }
+    })
+});
+
+$(".board-btn").click(function(e){
+    var board_id =  $(this).attr("board-id")
+    var board_image_id = $(this).attr("image-id")
+    let csr = $("input[name=csrfmiddlewaretoken").val();
+    mydata = {board_id:board_id,board_image_id:board_image_id,csrfmiddlewaretoken:csr}
+    $.ajax({
+        url: "/img/board-img-save/",
+        method: "POST",
+        data: mydata,
+        success:function(data){
+            if (data.status == 1){
+                location.reload()
+            }
+            else{
+                location.reload()
             }
         }
     })

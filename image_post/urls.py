@@ -14,5 +14,6 @@ urlpatterns = [
     path('like/', views.LikeClassView.as_view(),name='like'),
     path('unlike/', views.UnlikeClassView.as_view(),name='unlike'),
     path('comment/', views.CommentClassView.as_view(),name='comment'),
-    path('delete-comment/',views.DeleteCommentClassView.as_view(),name='delete-comment')
+    path('delete-comment/',views.DeleteCommentClassView.as_view(),name='delete-comment'),
+    path('board-img-save/',views.ImageSaveToBoardClassView.as_view(),name='board-img-save')
 ]

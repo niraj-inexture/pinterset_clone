@@ -15,7 +15,7 @@ IMAGE_TYPE = (
 
 class ImageStore(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    topic = models.ManyToManyField(Topic)
     description = models.TextField()
     image_path = CloudinaryField('image')
     approve_status = models.BooleanField(default=False)
@@ -24,18 +24,24 @@ class ImageStore(models.Model):
 
 
 class ImageSave(models.Model):
-    user = models.ForeignKey(RegisterUser,on_delete=models.CASCADE)
-    image_path = models.ForeignKey(ImageStore,on_delete=models.CASCADE)
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    image_path = models.ForeignKey(ImageStore, on_delete=models.CASCADE)
     is_save = models.BooleanField()
 
 
 class ImageLike(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='user_like')
     like_user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE, related_name='follower_like')
-    image_path = models.ForeignKey(ImageStore,on_delete=models.CASCADE)
+    image_path = models.ForeignKey(ImageStore, on_delete=models.CASCADE)
 
 
 class Comment(models.Model):
     user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
     image_path = models.ForeignKey(ImageStore, on_delete=models.CASCADE)
     comment = models.TextField()
+
+
+class BoardImages(models.Model):
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    image_post = models.ForeignKey(ImageStore, on_delete=models.CASCADE)
