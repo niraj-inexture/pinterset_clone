@@ -73,7 +73,6 @@ class LoginClassView(View):
             password = login_user.cleaned_data.get('password')
             emailauth = EmailAuthBackend()
             user = emailauth.authenticate(request, username=email, password=password)
-            print(user)
             if user is not None:
                 if user.is_active:
                     login(request, user)
