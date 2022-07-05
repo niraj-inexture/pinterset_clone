@@ -1,8 +1,9 @@
 let loc = window.location
 let wsStart = "ws://"
-if (location.protocol === "https"){
+if (loc.protocol === "https"){
     wsStart = "wss://"
 }
+console.log(wsStart)
 let endpoint = wsStart + location.host + location.pathname
 
 let socket = new WebSocket(endpoint)
