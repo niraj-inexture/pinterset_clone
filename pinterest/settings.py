@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'pinterest.wsgi.application'
+WSGI_APPLICATION = 'pinterest.wsgi.application'
 ASGI_APPLICATION = 'pinterest.asgi.application'
 
 # Database
