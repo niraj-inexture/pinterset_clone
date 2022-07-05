@@ -1,7 +1,7 @@
 let loc = window.location
-let wsStart = "ws://"
+let wsStart = 'ws://'
 if (loc.protocol === 'https:'){
-    wsStart = "wss://"
+    wsStart = 'wss://'
 }
 console.log(wsStart)
 let endpoint = wsStart + location.host + location.pathname
