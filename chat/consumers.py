@@ -1,3 +1,6 @@
+import django
+django.setup()
+
 import json
 
 from channels.consumer import AsyncConsumer
