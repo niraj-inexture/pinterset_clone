@@ -1,10 +1,11 @@
 from django.contrib import messages
+from django.db import IntegrityError
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
-from chat.models import Thread
+from chat.models import Thread, ChatMessage
 from image_post.forms import UploadImageForm, ImageSaveForm, UpdateImageDescriptionForm
 from image_post.models import ImageStore, ImageSave, ImageLike, Comment, BoardImages
 from topic.models import Topic
@@ -134,8 +135,8 @@ class FollowClassView(View):
             follow_user = RegisterUser.objects.get(id=follow_user_id)
             follow = FollowPeople(user=user, follow_user=follow_user)
             follow.save()
-            lookup1 = Q(first_person=request.user.id) & Q(second_person=request.user.id)
-            lookup2 = Q(first_person=follow_user_id) & Q(second_person=follow_user_id)
+            lookup1 = Q(first_person=request.user.id) | Q(second_person=request.user.id)
+            lookup2 = Q(first_person=follow_user_id) | Q(second_person=follow_user_id)
             lookup = Q(lookup1 | lookup2)
             qs = Thread.objects.filter(lookup)
             if not qs.exists():
@@ -155,13 +156,6 @@ class UnfollowClassView(View):
             follow_user_id = request.POST['fid']
             follow = FollowPeople.objects.get(user=user_id, follow_user=follow_user_id)
             follow.delete()
-            lookup1 = Q(first_person=request.user.id) & Q(second_person=request.user.id)
-            lookup2 = Q(first_person=follow_user_id) & Q(second_person=follow_user_id)
-            lookup = Q(lookup1 | lookup2)
-            qs = Thread.objects.filter(lookup)
-            if not qs.exists():
-                second_person_obj = RegisterUser.objects.get(id=follow_user_id)
-                Thread.objects.get(first_person=request.user, second_person=second_person_obj).delete()
             total_followers = FollowPeople.objects.filter(follow_user=follow_user_id).count()
             return JsonResponse({'status': 1, 'data': total_followers})
         else:
