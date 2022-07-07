@@ -31,6 +31,7 @@ class ChatConsumer(AsyncConsumer):
         print('receive', event)
         received_data = json.loads(event['text'])
         msg = received_data.get('message')
+        msg = msg.strip()
         sent_by_id = received_data.get('sent_by')
         send_by_id = received_data.get('send_to')
         thread_id = received_data.get('thread_id')

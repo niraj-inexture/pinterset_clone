@@ -54,7 +54,6 @@ html {
   background-color: rgba(0, 0, 0, 0.3) !important;
   border: 0 !important;
   color: white !important;
-  height: 60px !important;
   overflow-y: auto;
 }
 .type_msg:focus {
@@ -91,8 +90,8 @@ html {
   padding: 5px 10px;
   margin-bottom: 15px !important;
 }
-.active {
-  background-color: rgba(0, 0, 0, 0.3);
+.active_bg{
+ background-color:red;
 }
 .user_img {
   height: 70px;

@@ -50,14 +50,14 @@ socket.onclose = async function(e){
 
 function newMessage(message, sent_by_id,thread_id){
     if ($.trim(message) === ''){
-        return false;
+        return False;
     }
      let message_element;
      let chat_id = 'chat_' + thread_id
      const d = new Date();
      const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
      let day = weekday[d.getDay()]
-     let img_url = $('.u_img').attr('src')
+     let img_url = $('.log_user_img').attr('src')
      if (sent_by_id==USER_ID){
         message_element =
             '<div class="d-flex mb-4 replied">'

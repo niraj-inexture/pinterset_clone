@@ -1,11 +1,10 @@
 from django.contrib import messages
-from django.db import IntegrityError
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
-from chat.models import Thread, ChatMessage
+from chat.models import Thread
 from image_post.forms import UploadImageForm, ImageSaveForm, UpdateImageDescriptionForm
 from image_post.models import ImageStore, ImageSave, ImageLike, Comment, BoardImages
 from topic.models import Topic
@@ -15,7 +14,20 @@ from user.models import FollowPeople, RegisterUser, Boards
 # Create your views here.
 
 class SaveImageDetailView(View):
-    """This class view is used to show saved images"""
+    """
+        Show save images :model:`image_post.ImageSave`.
+
+        **Context**
+
+        ``save_img_data``
+            An instance of :model:`image_post.ImageSave`.
+
+        **Template:**
+
+            :template:`image_post/save_image.html`
+
+    """
+
     def get(self, request):
         if request.user.is_authenticated:
             save_img_data = ImageSave.objects.filter(user=request.user.id)
@@ -26,7 +38,47 @@ class SaveImageDetailView(View):
 
 
 class ImageDetailView(View):
-    """This class view is used show detail of particular image and save this particular image"""
+    """
+        Display image details :model:`image_post.ImageStore`.
+
+        **Context**
+
+        ``one_data``
+            An instance of :model:`image_post.ImageStore`.
+
+        ``all_data``
+            An instance of :model:`image_post.ImageStore`.
+
+        ``forms``
+            An render ImageSaveForm.
+
+        ``save_user_data``
+            An instance of :model:`image_post.ImageSave`.
+
+        ``follower_data``
+            An instance of :model:`image_post.FollowPeople`.
+
+        ``validate_follow_btn``
+            An instance of :model:`image_post.FollowPeople`.
+
+        ``validate_like_btn``
+            An instance of :model:`image_post.ImageLike`.
+
+        ``comment_data``
+            An instance of :model:`image_post.Comment`.
+
+        ``total_likes``
+            An instance of :model:`image_post.ImageLike`.
+
+        ``boards_name``
+        An instance of :model:`user.Boards`.
+
+        **Template:**
+
+            :template:`image_post/imagestore_detail.html`
+
+        """
+
     def get(self, request, pk):
         if request.user.is_authenticated:
             image_store_obj = ImageStore.objects.get(pk=pk)
@@ -62,7 +114,20 @@ class ImageDetailView(View):
 
 
 class UploadImageClassView(View):
-    """This class view is used to upload image"""
+    """
+       upload images :model:`image_post.ImageStore`.
+
+       **Context**
+
+       ``forms``
+           Image upload form.
+
+       **Template:**
+
+           :template:`image_post/upload_image.html`
+
+    """
+
     def get(self, request):
         if request.user.is_authenticated:
             upload_image = UploadImageForm(initial={'user': request.user.id})
@@ -81,7 +146,19 @@ class UploadImageClassView(View):
 
 
 class DeleteSaveImageView(View):
-    """This class view is used to delete particular image"""
+    """
+           delete save images :model:`image_post.ImageSave`.
+
+           **Context**
+
+                No context
+
+           **Template:**
+
+               No template
+
+        """
+
     def post(self, request):
         if request.user.is_authenticated:
             id = request.POST.get('sid')
@@ -93,7 +170,19 @@ class DeleteSaveImageView(View):
 
 
 class DeleteAllSaveImageView(View):
-    """This class view is used to delete all image"""
+    """
+            Delete all images from saved part :model:`image_post.ImageSave`.
+
+            **Context**
+
+                No context
+
+            **Template:**
+
+                No template
+
+        """
+
     def post(self, request):
         if request.user.is_authenticated:
             id = request.POST.get('uid')
@@ -105,7 +194,20 @@ class DeleteAllSaveImageView(View):
 
 
 class UpdateImageDescriptionView(View):
-    """This class view is used to update image description"""
+    """
+       update image detail :model:`image_post.ImageStore`.
+
+       **Context**
+
+       ``forms``
+           Update image description form.
+
+       **Template:**
+
+           :template:`image_post/update_image_detail.html`
+
+    """
+
     def get(self, request, id):
         if request.user.is_authenticated:
             image_detail = ImageStore.objects.get(pk=id)
@@ -126,7 +228,20 @@ class UpdateImageDescriptionView(View):
 
 
 class FollowClassView(View):
-    """This class view is used to follow user"""
+    """
+        Follow user :model:`user.FollowPeople`.
+
+        **Context**
+
+        ``data``
+            An instance of :model:`user.FollowPeople`.
+
+        **Template:**
+
+            No template
+
+    """
+
     def post(self, request):
         if request.user.is_authenticated:
             user_id = request.POST['uid']
@@ -149,7 +264,20 @@ class FollowClassView(View):
 
 
 class UnfollowClassView(View):
-    """This class view is used to unfollow user"""
+    """
+        Unfollow user :model:`user.FollowPeople`.
+
+        **Context**
+
+        ``data``
+            An instance of :model:`user.FollowPeople`.
+
+        **Template:**
+
+            No template
+
+    """
+
     def post(self, request):
         if request.user.is_authenticated:
             user_id = request.POST['uid']
@@ -163,7 +291,22 @@ class UnfollowClassView(View):
 
 
 class ImageHistoryClassView(View):
-    """This class view is used to show image history and delete uploaded image"""
+    """
+       show image history  :model:`image_post.ImageStore`.
+
+       delete uploaded image  :model:'image_post.ImageStore'.
+
+       **Context**
+
+       ``upload_image_data``
+           An instance of :model:`image_post.ImageStore`.
+
+       **Template:**
+
+           :template:`image_post/upload_image_history.html`
+
+    """
+
     def get(self, request):
         upload_image_data = ImageStore.objects.filter(user=request.user.id)
         return render(request, 'image_post/upload_image_history.html', {'upload_image_data': upload_image_data})
@@ -176,7 +319,20 @@ class ImageHistoryClassView(View):
 
 
 class LikeClassView(View):
-    """ This class view is used to like post"""
+    """
+        Like images :model:`image_post.ImageLike`.
+
+        **Context**
+
+        ``data``
+            An instance of :model:`user.ImageLike`.
+
+        **Template:**
+
+            No template
+
+    """
+
     def post(self, request):
         if request.user.is_authenticated:
             user_id = request.POST['uid']
@@ -199,7 +355,19 @@ class LikeClassView(View):
 
 
 class UnlikeClassView(View):
-    """This class view is used to unlike post"""
+    """
+        Unlike images :model:`image_post.ImageLike`.
+
+        **Context**
+
+        ``data``
+            An instance of :model:`user.ImageLike`.
+
+        **Template:**
+
+            No template
+
+    """
     def post(self, request):
         if request.user.is_authenticated:
             user_id = request.POST['uid']
@@ -220,9 +388,18 @@ class UnlikeClassView(View):
 
 
 class CommentClassView(View):
-    """This view class is used to add comment"""
+    """
+        Add comment :model:`image_post.Comment`.
+
+        **Context**
+
+            No Context
+
+        **Template:**
+
+            No template
+    """
     def post(self, request):
-        user_id = request.POST['uid']
         img_id = request.POST['imgid']
         comment = request.POST['comment']
         img_obj = ImageStore.objects.get(id=img_id)
@@ -231,7 +408,17 @@ class CommentClassView(View):
 
 
 class DeleteCommentClassView(View):
-    """This class view is used to delete comment"""
+    """
+        Delete comment :model:`image_post.Comment`.
+
+        **Context**
+
+            No Context
+
+        **Template:**
+
+            No template
+    """
     def post(self, request):
         comment = request.POST['cid']
         cmt = Comment.objects.get(id=comment)
@@ -240,7 +427,17 @@ class DeleteCommentClassView(View):
 
 
 class ImageSaveToBoardClassView(View):
-    """This view class is used to save images in particular one board"""
+    """
+        Save images in particular one board :model:`image_post.BoardImages`.
+
+        **Context**
+
+            No Context
+
+        **Template:**
+
+            No template
+    """
 
     def post(self, request):
         if request.user.is_authenticated:
@@ -258,8 +455,3 @@ class ImageSaveToBoardClassView(View):
                 return JsonResponse({'status': 1})
         else:
             return redirect('index')
-
-
-
-
-

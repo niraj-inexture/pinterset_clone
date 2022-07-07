@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import login, logout
+from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.http import JsonResponse
@@ -23,7 +23,19 @@ from .token import account_activation_token
 
 
 class HomeClassView(View):
-    """This class view is used to load home page"""
+    """
+       show all images uploaded by user
+
+       **Context**
+
+       ``images``
+           An instance of :model:`image_post.ImageStore`.
+
+       **Template:**
+
+           :template:`user/home.html`
+
+    """
 
     def get(self, request):
         if request.user.is_authenticated:
@@ -34,7 +46,18 @@ class HomeClassView(View):
 
 
 class IndexClassView(View):
-    """This class view is used to render index page"""
+    """
+       show index page
+
+       **Context**
+
+            No context
+
+       **Template:**
+
+           :template:`user/index.html`
+
+        """
 
     def get(self, request):
         if request.user.is_authenticated:
@@ -44,7 +67,19 @@ class IndexClassView(View):
 
 
 class RegisterClassView(View):
-    """This class view is used to render register page and register user"""
+    """
+       register user :model:`user.RegisterUser`.
+
+       **Context**
+
+       ``forms``
+           Registration form
+
+       **Template:**
+
+           :template:`user/registration.html`
+
+    """
 
     def get(self, request):
         register = ModelFormRegistration()
@@ -60,7 +95,19 @@ class RegisterClassView(View):
 
 
 class LoginClassView(View):
-    """This view class is used to render login page and login user"""
+    """
+       login user :model:`user.RegisterUser`.
+
+       **Context**
+
+       ``forms``
+           Login form
+
+       **Template:**
+
+           :template:`user/login.html`
+
+    """
 
     def get(self, request):
         login = ModelFormLogin()
@@ -88,7 +135,19 @@ class LoginClassView(View):
 
 
 class ProfileClassView(View):
-    """This class view is used user profile page load and update"""
+    """
+       update profile :model:`user.RegisterUser`.
+
+       **Context**
+
+       ``forms``
+           Profile update form
+
+       **Template:**
+
+           :template:`user/profile.html`
+
+    """
 
     def get(self, request):
         if request.user.is_authenticated:
@@ -108,7 +167,18 @@ class ProfileClassView(View):
 
 
 class ChangePasswordView(View):
-    """This class view is used for change password"""
+    """
+       change password :model:`user.RegisterUser`.
+
+       **Context**
+
+       ``forms``
+           change password form
+
+       **Template:**
+
+           :template:`user/change_password.html`
+    """
 
     def get(self, request):
         if request.user.is_authenticated:
@@ -132,7 +202,16 @@ class ChangePasswordView(View):
 
 
 class DeleteAccountClassView(View):
-    """This class view is used to delete user account"""
+    """
+       delete user account :model:`user.RegisterUser`.
+
+       **Context**
+            No context
+
+       **Template:**
+
+           No template
+    """
 
     def get(self, request, id):
         user_data = RegisterUser.objects.get(pk=id)
@@ -141,7 +220,17 @@ class DeleteAccountClassView(View):
 
 
 class TopicListClassView(View):
-    """This class view is used to get all topics for search"""
+    """
+       Get all topics for search :model:`topic.Topic`.
+
+       **Context**
+
+            No context
+
+       **Template:**
+
+           No template
+    """
 
     def get(self, request):
         topics = Topic.objects.all().values_list('topic_name', flat=True)
@@ -150,7 +239,18 @@ class TopicListClassView(View):
 
 
 class SearchClassView(View):
-    """This class view is used to search images using topic"""
+    """
+       Search images using topic :model:`image_post.ImageStore`.
+
+       **Context**
+
+        ``images``
+           An instance of :model:`image_post.ImageStore`.
+
+       **Template:**
+
+           :template:`user/search_topic.html`
+    """
 
     def get(self, request):
         return redirect('home')
@@ -163,7 +263,17 @@ class SearchClassView(View):
 
 
 class DeactivateUserAccountClassView(View):
-    """This class view is used to deactivate account"""
+    """
+       Deactivate account :model:`user.RegisterUser`.
+
+       **Context**
+
+           No context
+
+       **Template:**
+
+           No template
+    """
 
     def get(self, request, id):
         user = RegisterUser.objects.get(id=id)
@@ -173,7 +283,19 @@ class DeactivateUserAccountClassView(View):
 
 
 class ActivateUserAccountClassView(View):
-    """This class view is used to show activate form and send email to user for activate account"""
+    """
+       Show activate form and send email to user for activate account.
+
+       **Context**
+
+        ``activation_form``
+           User activation form
+
+       **Template:**
+
+            :template:`user/activate_account.html`
+            :template:`user/acc_active_email.html'
+    """
 
     def get(self, request):
         activation_form = ModelFormActivateAccount()
@@ -210,7 +332,17 @@ class ActivateUserAccountClassView(View):
 
 
 class ActivateAccountClassView(View):
-    """This class view is used to activate account"""
+    """
+       Activate account.
+
+       **Context**
+
+            No context
+
+       **Template:**
+
+            :template:`user/activate_success.html`
+    """
 
     def get(self, request, uidb64, token):
         try:
@@ -228,7 +360,21 @@ class ActivateAccountClassView(View):
 
 
 class CreateBoardClassView(View):
-    """This class view is used to shoe board form and create boards"""
+    """
+       show board form and create boards.
+
+       **Context**
+
+        ``board``
+          Board form
+
+        ``boards_name``
+          An instance of :model:`user.Boards`.
+
+       **Template:**
+
+            :template:`user/create_board.html`
+    """
 
     def get(self, request):
         board = CreateBoardForm(initial={'user': request.user.id})
@@ -250,7 +396,18 @@ class CreateBoardClassView(View):
 
 
 class ShowImagesInBoardClassView(View):
-    """This class view is used to show board images"""
+    """
+       Show board images :model:`image_post.BoardImages`.
+
+       **Context**
+
+        ``boards_images``
+           An instance of :model:`image_post.BoardImages`.
+
+       **Template:**
+
+            :template:`user/board_images.html`
+    """
 
     def get(self, request, pk):
         boards_image_obj = BoardImages.objects.filter(user=request.user.id, topic=pk)
@@ -258,7 +415,17 @@ class ShowImagesInBoardClassView(View):
 
 
 class DeleteBoardImageClassView(View):
-    """This class view is used to delete one image from board"""
+    """
+       Delete one image from board :model:`image_post.BoardImages`.
+
+       **Context**
+
+            No Context
+
+       **Template:**
+
+            No template
+    """
 
     def post(self, request):
         if request.user.is_authenticated:
@@ -271,7 +438,17 @@ class DeleteBoardImageClassView(View):
 
 
 class DeleteBoardClassView(View):
-    """This class view is used to delete particular one board"""
+    """
+       Delete particular one board :model:`user.Boards`.
+
+       **Context**
+
+            No Context
+
+       **Template:**
+
+            No template
+    """
 
     def post(self, request):
         if request.user.is_authenticated:
