@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ImageStore, ImageSave, ImageLike
+from .models import ImageStore, ImageSave, ImageLike, Comment, BoardImages
 
 
 # Register your models here.
@@ -7,7 +7,7 @@ from .models import ImageStore, ImageSave, ImageLike
 
 class ImageAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'user_id',  'description', 'image_path', 'image_type', 'approve_status',
+        'id', 'user_id', 'description', 'image_path', 'image_type', 'approve_status',
         'image_upload_date')
 
 
@@ -19,7 +19,15 @@ class ImageSaveAdmin(admin.ModelAdmin):
         'id', 'user_id', 'image_path', 'is_save')
 
 
-admin.site.register(ImageSave,ImageSaveAdmin)
+admin.site.register(ImageSave, ImageSaveAdmin)
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'id','user', 'image_path', 'comment')
+
+
+admin.site.register(Comment, CommentAdmin)
 
 
 class ImageLikeAdmin(admin.ModelAdmin):
@@ -27,4 +35,12 @@ class ImageLikeAdmin(admin.ModelAdmin):
         'id', 'user', 'like_user')
 
 
-admin.site.register(ImageLike,ImageLikeAdmin)
+admin.site.register(ImageLike, ImageLikeAdmin)
+
+
+class BoardImagesAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'user', 'topic', 'image_post')
+
+
+admin.site.register(BoardImages, BoardImagesAdmin)
